@@ -1,0 +1,21 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100vh;
+}
+
+/* .grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+} */
+
+.grid-here {
+    display: flex;
+    width: 600px;
+    height: 600px;
+    background-color: aquamarine;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
