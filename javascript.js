@@ -1,16 +1,5 @@
 const gridGoesHere = document.querySelector('.grid-here');
 
-// for (let i = 0; i < 25; i++){
-//     const divGridElement = document.createElement('div');
-//     divGridElement.setAttribute('style', 'border: 1px solid black')
-//     divGridElement.style.width = (600 / 25) + 'px'
-//     divGridElement.style.height = (600 / 25) + 'px'
-//     divGridElement.className = "cell";
-//     gridGoesHere.appendChild(divGridElement);
-// }
-
-// create rows along the div (as many as needed)
-
 function makeGrid (pixels){
     for (let i = 0; i < pixels; i++){
         const divGridElement = document.createElement('div');
@@ -31,33 +20,34 @@ function makeGrid (pixels){
     }
 }
 
+let blackFlag = true
+let colorFlag = false
 
-
-let mouseIsDown = false
 
 function colourOneCell(e){
-    e.target.classList.add('hold');
+    // e.target.classList.add('hold');
+    // e.target.style.backgroundColor = "rgb(155, 102, 102)"
+    e.target.style.backgroundColor = randomColourGenerator()
 }
 
 function colourCell(e){
     if (mouseIsDown === true){
-        e.target.classList.add('hold');
+        // e.target.classList.add('hold');
+        e.target.style.backgroundColor = randomColourGenerator()
     }
     else {
         return;
     }
 }
-// mousover is hover
+
 function startColouringCell(){
+    const cells = Array.from(document.querySelectorAll('.cell'));
     mouseIsDown = true
     if (mouseIsDown === true){
         cells.forEach(cell => cell.addEventListener("mouseover", colourCell))
     }
-    // else if (mouseIsDown === false){
-    //     return;
-    // }
+    return mouseIsDown
 }
-
 
 function removeColourCell(e){
     e.target.classList.remove('hold');
@@ -67,27 +57,52 @@ function stopColouring(){
     mouseIsDown = false;
 }
 
-gridSize = parseInt(prompt("How many cells would you like to draw?"))
-
-makeGrid(gridSize)
-
-const cells = Array.from(document.querySelectorAll('.cell'));
-cells.forEach(cell => cell.addEventListener("mousedown", startColouringCell))
-cells.forEach(cell => cell.addEventListener("click", colourOneCell))
-cells.forEach(cell => cell.addEventListener("dblclick", removeColourCell))
-cells.forEach(cell => cell.addEventListener("mouseup", stopColouring))
-
-
-
-function clearCanvas(cells){
-    console.log('hello')
-    // cells.forEach(cell => cell.target.classList.remove('hold'));
+function eventListeners(){
+    const cells = Array.from(document.querySelectorAll('.cell'));
+    cells.forEach(cell => cell.addEventListener("mousedown", startColouringCell))
+    cells.forEach(cell => cell.addEventListener("click", colourOneCell))
+    cells.forEach(cell => cell.addEventListener("dblclick", removeColourCell))
+    cells.forEach(cell => cell.addEventListener("mouseup", stopColouring))
 }
+
+function randomInRange(from, to) {
+    var r = Math.random();
+    return Math.floor(r * (to - from) + from);
+  }
+
+function randomColourGenerator(){
+    let red = randomInRange(40, 255);
+    let blue = randomInRange(40, 255);
+    let green = randomInRange(40, 255);
+    return `rgb(${red}, ${blue}, ${green})`
+}
+
+
+let mouseIsDown = false
+// clickFlag = false
+
+function createGrid(){
+    gridSize = parseInt(prompt("How many cells would you like to draw?"))
+    if (gridSize < 100){
+        makeGrid(gridSize)
+    } 
+    else if (gridSize > 100) {
+        alert("Please enter a number under 100")
+    }
+}   
+
+createGrid()
+eventListeners()
+
 
 document.getElementById('clearCanvas').onclick = function() {
     console.log('hello')
-    cells.forEach(cell => cell.classList.remove('hold'))
-    gridSize = parseInt(prompt("How many cells would you like to draw?"))
-    // cells.target.classList.remove('hold');
+    mouseIsDown = false
+    clickFlag = false
+    var node = document.getElementById('container-grid');
+    node.innerHTML = "";
+    // gridSize = parseInt(prompt("How many cells would you like to draw?"))
+    // makeGrid(gridSize)
+    createGrid()
+    eventListeners()      
 };
-// document.getElementById('clearCanvas').onclick = clearCanvas(cells);
