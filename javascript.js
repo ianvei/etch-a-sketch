@@ -25,15 +25,23 @@ let colorFlag = false
 
 
 function colourOneCell(e){
-    // e.target.classList.add('hold');
-    // e.target.style.backgroundColor = "rgb(155, 102, 102)"
-    e.target.style.backgroundColor = randomColourGenerator()
+    if (blackFlag){
+        e.target.style.backgroundColor = "black"
+    }
+    else if (!blackFlag){
+        e.target.style.backgroundColor = randomColourGenerator()
+    }
 }
 
 function colourCell(e){
     if (mouseIsDown === true){
         // e.target.classList.add('hold');
-        e.target.style.backgroundColor = randomColourGenerator()
+        if (blackFlag){
+            e.target.style.backgroundColor = "black"
+        }
+        else if (!blackFlag){
+            e.target.style.backgroundColor = randomColourGenerator()
+        }
     }
     else {
         return;
@@ -51,6 +59,7 @@ function startColouringCell(){
 
 function removeColourCell(e){
     e.target.classList.remove('hold');
+    e.target.style.backgroundColor = "white"
 }
 
 function stopColouring(){
@@ -83,7 +92,7 @@ let mouseIsDown = false
 
 function createGrid(){
     gridSize = parseInt(prompt("How many cells would you like to draw?"))
-    if (gridSize < 100){
+    if (gridSize <= 100){
         makeGrid(gridSize)
     } 
     else if (gridSize > 100) {
@@ -106,3 +115,14 @@ document.getElementById('clearCanvas').onclick = function() {
     createGrid()
     eventListeners()      
 };
+
+
+document.getElementById('rainbow').onclick = function() {
+    blackFlag = false
+    console.log(blackFlag)
+}
+
+document.getElementById('black').onclick = function() {
+    blackFlag = true
+    console.log(blackFlag)
+}
